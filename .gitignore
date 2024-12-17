@@ -1,0 +1,87 @@
+# Logs and debug files
+*.log
+*.out
+*.err
+
+# Python specific files
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# FastAPI related
+*.sqlite3
+*.db
+*.DS_Store
+
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Environment Variables
+.env
+
+# Byte-compiled / Python cache files
+__pycache__/
+*.py[cod]
+
+# IDE and Editor folders and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# MacOS specific
+.DS_Store
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+*.py,cover
+
+# pytest
+.cache/
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Neo4j
+data/
+logs/
+
+# Test-related files
+test-results/
+tests/__pycache__/
+tests/.pytest_cache/
+tests/.DS_Store
+
+# Linting and static analysis
+.pylint.d/
+.mypy_cache/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# System files
+Thumbs.db
+desktop.ini
+
+# Others
+*.log
+*.bak
+*.tmp
