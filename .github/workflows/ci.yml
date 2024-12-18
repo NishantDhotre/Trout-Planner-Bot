@@ -1,4 +1,4 @@
-name: CI/CD for One-Day Tour Planner
+name: CI Pipeline for One-Day Tour Planner
 
 on:
   push:
@@ -10,53 +10,37 @@ on:
 
 jobs:
   build:
-    name: Build, Lint, Test, and Deploy
     runs-on: ubuntu-latest
 
-    services:
-      neo4j:
-        image: neo4j:latest
-        ports:
-          - 7687:7687
-        env:
-          NEO4J_AUTH: "neo4j/your_password_here"
-
     steps:
-    # Step 1: Check out the code
-    - name: Check out code
-      uses: actions/checkout@v3
+      # Step 1: Check out code
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    # Step 2: Set up Python
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
+      # Step 2: Set up Python
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
-    # Step 3: Install dependencies
-    - name: Install dependencies
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-    # Step 4: Lint with Flake8
-    - name: Lint with Flake8
-      run: |
-        source venv/bin/activate
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      # Step 4: Lint code using flake8
+      - name: Lint with Flake8
+        run: |
+          source venv/bin/activate
+          pip install flake8
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    # Step 5: Run tests
-    - name: Run Tests
-      run: |
-        source venv/bin/activate
-        pytest tests/
-
-    # Step 6: Deploy (Optional)
-    - name: Deploy to Heroku (Optional)
-      if: success()
-      uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-        heroku_app_name: one-day-tour-planner
-        heroku_email: your-email@example.com
+      # Step 5: Run tests using pytest
+      - name: Run Tests with Pytest
+        run: |
+          source venv/bin/activate
+          pip install pytest
+          pytest tests/
