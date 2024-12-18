@@ -12,6 +12,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      neo4j:
+        image: neo4j:latest
+        ports:
+          - 7687:7687
+        env:
+          NEO4J_AUTH: "neo4j/your_password_here"
+
     steps:
       # Step 1: Check out code
       - name: Checkout Code
@@ -31,14 +39,14 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Lint code using flake8
-      - name: Lint with Flake8
+      # Step 4: Lint code using flake8 and exclude third-party libraries
+      - name: Run Linting with Flake8
         run: |
           source venv/bin/activate
           pip install flake8
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --exclude venv,site-packages,__pycache__
 
-      # Step 5: Run tests using pytest
+      # Step 5: Run unit tests with pytest
       - name: Run Tests with Pytest
         run: |
           source venv/bin/activate
