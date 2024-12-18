@@ -39,13 +39,21 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      
+          
+      # Step 4: Auto-format code with autopep8
+      - name: Format Code with autopep8
+        run: |
+          source venv/bin/activate
+          pip install autopep8
+          autopep8 --in-place --recursive --aggressive --aggressive .
+          
       # Step 4: Lint code using flake8 and exclude third-party libraries
       - name: Run Linting with Flake8
         run: |
           source venv/bin/activate
           pip install flake8
           flake8 . --exclude venv,site-packages,__pycache__
-
       # Step 5: Run unit tests with pytest
       - name: Run Tests with Pytest
         run: |
