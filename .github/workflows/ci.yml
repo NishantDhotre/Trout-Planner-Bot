@@ -12,24 +12,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      neo4j:
-        image: neo4j:latest
-        ports:
-          - 7687:7687
-        env:
-          NEO4J_AUTH: "neo4j/your_password_here"
-
     steps:
       # Step 1: Check out code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python
-      - name: Set up Python 3.9
+      # Step 2: Set up Python 3.11
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.11
 
       # Step 3: Install dependencies
       - name: Install Dependencies
@@ -39,22 +31,14 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      
-          
-      # Step 4: Auto-format code with autopep8
-      - name: Format Code with autopep8
-        run: |
-          source venv/bin/activate
-          pip install autopep8
-          autopep8 --in-place --recursive --aggressive --aggressive .
-          
-      # Step 4: Lint code using flake8 and exclude third-party libraries
+      # Step 4: Run Linting with Flake8
       - name: Run Linting with Flake8
         run: |
           source venv/bin/activate
           pip install flake8
-          flake8 . --exclude venv,site-packages,__pycache__
-      # Step 5: Run unit tests with pytest
+          flake8
+
+      # Step 5: Run Tests with Pytest
       - name: Run Tests with Pytest
         run: |
           source venv/bin/activate
