@@ -31,14 +31,19 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run Linting with Flake8
+      # Step 4: Set PYTHONPATH for the project
+      - name: Set PYTHONPATH
+        run: |
+          echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      # Step 5: Run Linting with Flake8
       - name: Run Linting with Flake8
         run: |
           source venv/bin/activate
           pip install flake8
           flake8
 
-      # Step 5: Run Tests with Pytest
+      # Step 6: Run Tests with Pytest
       - name: Run Tests with Pytest
         run: |
           source venv/bin/activate
