@@ -1,6 +1,7 @@
 import os
 from neo4j import GraphDatabase
 
+
 class MemoryAgent:
     def __init__(self, uri, user, password):
         """Initialize the MemoryAgent with Neo4j connection details."""
@@ -19,6 +20,7 @@ class MemoryAgent:
     def close(self):
         """Close the connection to the Neo4j database."""
         self.driver.close()
+
 
 # Fetch Neo4j credentials from environment variables
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
