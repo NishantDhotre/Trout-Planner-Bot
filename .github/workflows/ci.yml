@@ -12,12 +12,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      # Add Neo4j as a service
+      neo4j:
+        image: neo4j:latest
+        ports:
+          - 7687:7687
+          - 7474:7474
+        env:
+          NEO4J_AUTH: "neo4j/${{ secrets.NEO4J_PASSWORD }}"  # Use GitHub secret for password
+
     steps:
-      # Step 1: Check out code
+      # Step 1: Check out the code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python 3.11
+      # Step 2: Set up Python
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
@@ -31,10 +41,12 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Set PYTHONPATH for the project
-      - name: Set PYTHONPATH
+      # Step 4: Set environment variables
+      - name: Set Environment Variables
         run: |
-          echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+          echo "NEO4J_URI=bolt://localhost:7687" >> $GITHUB_ENV
+          echo "NEO4J_USER=neo4j" >> $GITHUB_ENV
+          echo "NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}" >> $GITHUB_ENV
 
       # Step 5: Run Linting with Flake8
       - name: Run Linting with Flake8
@@ -49,3 +61,12 @@ jobs:
           source venv/bin/activate
           pip install pytest
           pytest tests/
+
+      # Step 7: Verify Neo4j Connection
+      - name: Verify Neo4j Connection
+        run: |
+          source venv/bin/activate
+          python -c "
+          from neo4j import GraphDatabase
+          driver = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j', '${{ secrets.NEO4J_PASSWORD }}'))
+          print('Neo4j connection successful')"
