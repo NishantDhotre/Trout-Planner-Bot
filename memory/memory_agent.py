@@ -28,9 +28,11 @@ NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 if not NEO4J_PASSWORD:
-    raise ValueError("NEO4J_PASSWORD is not set. Please set it in your CI/CD secrets.")
+    raise ValueError("NEO4J_PASSWORD is not set. Please set it in your CI/CD secrets or local environment.")
 
 # Example usage (this part would typically be in your application logic or tests)
 if __name__ == "__main__":
     memory_agent = MemoryAgent(NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD)
+    memory_agent.store_user_preference("John", "Cuisine", "Vegan")
+    print("User preference stored successfully.")
     memory_agent.close()
